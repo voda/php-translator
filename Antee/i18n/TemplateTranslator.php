@@ -74,7 +74,7 @@ class TemplateTranslator {
 
 	/*** helpers **************************************************************/
 
-	public function registerHelpers(BaseTemplate $template, ITranslator $translator) {
+	public static function registerHelpers(BaseTemplate $template, ITranslator $translator) {
 		$template->registerHelper('gettext', array($translator, 'gettext'));
 		$template->registerHelper('ngettext', array($translator, 'ngettext'));
 		$template->registerHelper('pgettext', array($translator, 'pgettext'));
