@@ -56,19 +56,14 @@ class NetteTranslator implements \Nette\ITranslator {
 	 * @throws InvalidArgumentException
 	 */
 	public static function addTranslationContext($value, $context) {
-		if (!is_string($context)) {
-			throw new InvalidArgumentException("Context must be a string. '".gettype($context)."' given.");
-		}
-		if (is_string($value)) {
-			return $context . chr(4) . $value;
-		} elseif (is_array($value) || $value instanceof Traversable) {
+		if (is_array($value) || $value instanceof Traversable) {
 			$array = array();
 			foreach ($value as $key => $string) {
 				$array[$key] = self::addTranslationContext($string, $context);
 			}
 			return $array;
 		}
-		throw new InvalidArgumentException("Value must be a string, array or instance of \Traversable.");
+		return (string)$context . chr(4) . (string)$value;
 	}
 
 	/*** \Nette\ITranslator ***************************************************/
