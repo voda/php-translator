@@ -76,7 +76,7 @@ class GettextTranslator implements ITranslator {
 		if ($this->reader === null) {
 			return $message;
 		}
-		return $this->reader->translate($message);
+		return $this->reader->translate((string)$message);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class GettextTranslator implements ITranslator {
 		if ($this->reader === null) {
 			return $count > 1 ? $plural : $singular;
 		}
-		return $this->reader->ngettext($singular, $plural, $count);
+		return $this->reader->ngettext((string)$singular, (string)$plural, $count);
 	}
 
 	/**
@@ -105,7 +105,7 @@ class GettextTranslator implements ITranslator {
 		if ($this->reader === null) {
 			return $message;
 		}
-		return $this->reader->pgettext($context, $message);
+		return $this->reader->pgettext((string)$context, (string)$message);
 	}
 
 	/**
@@ -121,6 +121,6 @@ class GettextTranslator implements ITranslator {
 		if ($this->reader === null) {
 			return $count > 1 ? $plural : $singular;
 		}
-		return $this->reader->npgettext($context, $singular, $plural, $count);
+		return $this->reader->npgettext((string)$context, (string)$singular, (string)$plural, $count);
 	}
 }
