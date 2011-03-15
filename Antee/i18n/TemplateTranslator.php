@@ -30,7 +30,7 @@ namespace Antee\i18n;
 
 use \Nette\Templates\LatteMacros,
 	\Nette\Templates\LatteFilter,
-	\Nette\Templates\BaseTemplate;
+	\Nette\Templates\Template;
 
 
 /**
@@ -74,7 +74,7 @@ class TemplateTranslator {
 
 	/*** helpers **************************************************************/
 
-	public static function registerHelpers(BaseTemplate $template, ITranslator $translator) {
+	public static function registerHelpers(Template $template, ITranslator $translator) {
 		$template->registerHelper('gettext', array($translator, 'gettext'));
 		$template->registerHelper('ngettext', array($translator, 'ngettext'));
 		$template->registerHelper('pgettext', array($translator, 'pgettext'));
