@@ -46,30 +46,23 @@ class TemplateTranslator {
 	/*** macros ***************************************************************/
 
 	public static function registerMacros() {
-		LatteMacros::$defaultMacros['_'] = '<?php echo %:macroEscape%(%\\'.__CLASS__.'::gettextMacro%) ?>';
-		LatteMacros::$defaultMacros['_n'] = '<?php echo %:macroEscape%(%\\'.__CLASS__.'::ngettextMacro%) ?>';
-		LatteMacros::$defaultMacros['_p'] = '<?php echo %:macroEscape%(%\\'.__CLASS__.'::pgettextMacro%) ?>';
-		LatteMacros::$defaultMacros['_np'] = '<?php echo %:macroEscape%(%\\'.__CLASS__.'::npgettextMacro%) ?>'; // not working
-		LatteMacros::$defaultMacros['!_'] = '<?php echo %\\'.__CLASS__.'::gettextMacro% ?>';
-		LatteMacros::$defaultMacros['!_n'] = '<?php echo %\\'.__CLASS__.'::ngettextMacro% ?>'; // not working
-		LatteMacros::$defaultMacros['!_p'] = '<?php echo %\\'.__CLASS__.'::pgettextMacro% ?>'; // not working
-		LatteMacros::$defaultMacros['!_np'] = '<?php echo %\\'.__CLASS__.'::npgettextMacro% ?>'; // not working
-	}
+		LatteMacros::$defaultMacros['_'] = '<?php echo %:escape%(%:gettextMacro%) ?>';
+		LatteMacros::$defaultMacros['!_'] = '<?php echo %:gettextMacro% ?>';
 
-	public static function gettextMacro($var, $modifiers) {
-		return LatteFilter::formatModifiers($var, 'gettext|'.$modifiers);
-	}
-
-	public static function ngettextMacro($var, $modifiers) {
-		return LatteFilter::formatModifiers($var, 'ngettext|'.$modifiers);
-	}
-
-	public static function pgettextMacro($var, $modifiers) {
-		return LatteFilter::formatModifiers($var, 'pgettext|'.$modifiers);
-	}
-
-	public static function npgettextMacro($var, $modifiers) {
-		return LatteFilter::formatModifiers($var, 'npgettext|'.$modifiers);
+		LatteMacros::extensionMethod('gettextMacro', function(LatteMacros $_this, $var, $modifiers) {
+			$prefix = '';
+			if (strpos($var, 'np') === 0) {
+				$var = substr($var, 2);
+				$prefix = "np";
+			} elseif (strpos($var, 'n') === 0) {
+				$var = substr($var, 1);
+				$prefix = "n";
+			} elseif (strpos($var, 'p') === 0) {
+				$var = substr($var, 1);
+				$prefix = "p";
+			}
+			return $_this->formatModifiers($_this->formatMacroArgs($var), "|{$prefix}gettext" . $modifiers);
+		});
 	}
 
 	/*** helpers **************************************************************/
