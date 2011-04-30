@@ -37,7 +37,7 @@ use \InvalidArgumentException;
  *
  * @author Ondřej Vodáček
  */
-class NetteTranslator implements \Nette\ITranslator {
+class NetteTranslator implements \Nette\Localization\ITranslator {
 
 	/** @var ITranslator */
 	private $translator;

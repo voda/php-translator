@@ -28,9 +28,9 @@
 
 namespace Antee\i18n;
 
-use \Nette\Templates\LatteMacros,
-	\Nette\Templates\LatteFilter,
-	\Nette\Templates\Template;
+use Nette\Latte\DefaultMacros,
+	Nette\Latte\Engine,
+	Nette\Templating\Template;
 
 
 /**
@@ -46,10 +46,10 @@ class TemplateTranslator {
 	/*** macros ***************************************************************/
 
 	public static function registerMacros() {
-		LatteMacros::$defaultMacros['_'] = '<?php echo %:escape%(%:gettextMacro%) ?>';
-		LatteMacros::$defaultMacros['!_'] = '<?php echo %:gettextMacro% ?>';
+		DefaultMacros::$defaultMacros['_'] = '<?php echo %:escape%(%:gettextMacro%) ?>';
+		DefaultMacros::$defaultMacros['!_'] = '<?php echo %:gettextMacro% ?>';
 
-		LatteMacros::extensionMethod('gettextMacro', function(LatteMacros $_this, $var, $modifiers) {
+		DefaultMacros::extensionMethod('gettextMacro', function(DefaultMacros $_this, $var, $modifiers) {
 			$prefix = '';
 			if (strpos($var, 'np') === 0) {
 				$var = substr($var, 2);
