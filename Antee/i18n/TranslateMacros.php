@@ -28,45 +28,56 @@
 
 namespace Antee\i18n;
 
-use Nette\Latte\DefaultMacros,
-	Nette\Latte\Engine,
+use Nette\Latte\Macros\MacroSet,
+	Nette\Latte\Parser,
 	Nette\Templating\Template;
 
 
 /**
- * Translator for templates.
+ * Translator macros and helpers for templates.
  *
  * @author Ondřej Vodáček
  */
-class TemplateTranslator {
+class TranslateMacros extends MacroSet {
 
-	private function __construct() {
+	public function macroGettext(\Nette\Latte\MacroNode $node, $writer) {
+		$args = $node->args;
+		$prefix = '';
+		if (strpos($args, 'np') === 0) {
+			$args = substr($args, 2);
+			$prefix = "np";
+		} elseif (strpos($args, 'n') === 0) {
+			$args = substr($args, 1);
+			$prefix = "n";
+		} elseif (strpos($args, 'p') === 0) {
+			$args = substr($args, 1);
+			$prefix = "p";
+		}
+		$node->setArgs($args);
+		return $writer->write('echo %modify', '$template->' . $prefix . 'gettext(' . $writer->formatArgs() . ')');
 	}
 
-	/*** macros ***************************************************************/
-
-	public static function registerMacros() {
-		DefaultMacros::$defaultMacros['_'] = '<?php echo %:escape%(%:gettextMacro%) ?>';
-		DefaultMacros::$defaultMacros['!_'] = '<?php echo %:gettextMacro% ?>';
-
-		DefaultMacros::extensionMethod('gettextMacro', function(DefaultMacros $_this, $var, $modifiers) {
-			$prefix = '';
-			if (strpos($var, 'np') === 0) {
-				$var = substr($var, 2);
-				$prefix = "np";
-			} elseif (strpos($var, 'n') === 0) {
-				$var = substr($var, 1);
-				$prefix = "n";
-			} elseif (strpos($var, 'p') === 0) {
-				$var = substr($var, 1);
-				$prefix = "p";
-			}
-			return $_this->formatModifiers($_this->formatMacroArgs($var), "|{$prefix}gettext" . $modifiers);
-		});
+	/**
+	 * Add gettext macros
+	 *
+	 * @param Template
+	 * @param ITranslator
+	 */
+	public static function install(Parser $parser) {
+		$me = new static($parser);
+		$callback = array($me, 'macroGettext');
+        $me->addMacro('_', $callback);
+        $me->addMacro('_n', $callback);
+        $me->addMacro('_p', $callback);
+        $me->addMacro('_np', $callback);
 	}
 
-	/*** helpers **************************************************************/
-
+	/**
+	 * Add gettext helpers to template.
+	 *
+	 * @param Template
+	 * @param ITranslator
+	 */
 	public static function registerHelpers(Template $template, ITranslator $translator) {
 		$template->registerHelper('gettext', array($translator, 'gettext'));
 		$template->registerHelper('ngettext', array($translator, 'ngettext'));
