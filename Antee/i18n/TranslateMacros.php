@@ -54,7 +54,7 @@ class TranslateMacros extends MacroSet {
 			$prefix = "p";
 		}
 		$node->setArgs($args);
-		return $writer->write('echo %modify', '$template->' . $prefix . 'gettext(' . $writer->formatArgs() . ')');
+		return $writer->write('echo %modify($template->' . $prefix . 'gettext(%node.args))');
 	}
 
 	/**
