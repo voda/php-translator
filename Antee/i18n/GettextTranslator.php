@@ -46,6 +46,14 @@ class GettextTranslator implements ITranslator {
 	 * @throws UnexpectedValueException
 	 */
 	public function __construct($catalog = null) {
+		$this->setCatalog($catalog);
+	}
+
+	/**
+	 * @param string $catalog catalog file
+	 * @throws UnexpectedValueException
+	 */
+	public function setCatalog($catalog = null) {
 		if ($catalog === null) {
 			$this->reader = null;
 		} else {
