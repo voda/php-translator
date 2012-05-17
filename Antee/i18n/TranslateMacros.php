@@ -29,7 +29,7 @@
 namespace Antee\i18n;
 
 use Nette\Latte\Macros\MacroSet,
-	Nette\Latte\Parser,
+	Nette\Latte\Compiler,
 	Nette\Templating\Template;
 
 
@@ -63,7 +63,7 @@ class TranslateMacros extends MacroSet {
 	 * @param Template
 	 * @param ITranslator
 	 */
-	public static function install(Parser $parser) {
+	public static function install(Compiler $parser) {
 		$me = new static($parser);
 		$callback = array($me, 'macroGettext');
         $me->addMacro('_', $callback);
