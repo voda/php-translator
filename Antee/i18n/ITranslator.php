@@ -70,5 +70,4 @@ interface ITranslator {
 	 * @return string
 	 */
 	public function npgettext($context, $singular, $plural, $count);
-
 }

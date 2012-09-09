@@ -42,10 +42,9 @@ class NetteTranslator implements \Nette\Localization\ITranslator {
 	/** @var ITranslator */
 	private $translator;
 
-	function __construct(ITranslator $translator) {
+	public function __construct(ITranslator $translator) {
 		$this->translator = $translator;
 	}
-
 
 	/**
 	 * Add context to given string(s).
@@ -68,13 +67,7 @@ class NetteTranslator implements \Nette\Localization\ITranslator {
 
 	/*** \Nette\ITranslator ***************************************************/
 
-	/**
-	 * Translates the given string.
-	 * @param  string   message
-	 * @param  int      plural count
-	 * @return string
-	 */
-	public function translate($message, $count = NULL) {
+	public function translate($message, $count = null) {
 		$isContext = false;
 		$context = "";
 		if (strpos($message, chr(4)) !== false) {

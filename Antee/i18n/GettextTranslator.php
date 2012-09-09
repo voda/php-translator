@@ -40,7 +40,6 @@ class GettextTranslator implements ITranslator {
 	/** @var gettext_reader */
 	private $reader;
 
-
 	/**
 	 * @param string $catalog catalog file
 	 * @throws UnexpectedValueException
@@ -67,7 +66,6 @@ class GettextTranslator implements ITranslator {
 			$this->reader = new gettext_reader($reader);
 		}
 	}
-
 
 	/*** ITranslator **********************************************************/
 

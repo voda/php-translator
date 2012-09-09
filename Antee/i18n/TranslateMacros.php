@@ -32,7 +32,6 @@ use Nette\Latte\Macros\MacroSet,
 	Nette\Latte\Compiler,
 	Nette\Templating\Template;
 
-
 /**
  * Translator macros and helpers for templates.
  *
@@ -66,10 +65,10 @@ class TranslateMacros extends MacroSet {
 	public static function install(Compiler $parser) {
 		$me = new static($parser);
 		$callback = array($me, 'macroGettext');
-        $me->addMacro('_', $callback);
-        $me->addMacro('_n', $callback);
-        $me->addMacro('_p', $callback);
-        $me->addMacro('_np', $callback);
+		$me->addMacro('_', $callback);
+		$me->addMacro('_n', $callback);
+		$me->addMacro('_p', $callback);
+		$me->addMacro('_np', $callback);
 	}
 
 	/**
