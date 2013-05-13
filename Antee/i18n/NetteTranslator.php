@@ -70,22 +70,26 @@ class NetteTranslator implements \Nette\Localization\ITranslator {
 	public function translate($message, $count = null) {
 		$isContext = false;
 		$context = "";
+		$plural = "";
+		$isPlural = is_array($message);
+		if ($isPlural) {
+			list($message, $plural) = $message;
+		}
 		if (strpos($message, chr(4)) !== false) {
 			$isContext = true;
 			list ($context, $message) = explode(chr(4), $message, 2);
 		}
-		$isPlural = !is_null($count);
 
 		$translation = null;
 		switch (true) {
 			case $isContext && $isPlural:
-				$translation = $this->translator->npgettext($context, $message, $message, $count);
+				$translation = $this->translator->npgettext($context, $message, $plural, $count);
 				break;
 			case $isContext:
 				$translation = $this->translator->pgettext($context, $message);
 				break;
 			case $isPlural:
-				$translation = $this->translator->ngettext($message, $message, $count);
+				$translation = $this->translator->ngettext($message, $plural, $count);
 				break;
 			default:
 				$translation = $this->translator->gettext($message);
